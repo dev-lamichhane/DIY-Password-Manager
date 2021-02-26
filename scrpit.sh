@@ -1,13 +1,15 @@
 #!/usr/bin/bash
 
-deb=`ls /etc | grep apt | head -1`
-arch=`ls /etc | grep pacman | head -1 `
+apt=`ls /etc | grep apt | head -1`
+pacman=`ls /etc | grep pacman | head -1 `
 
-if [ ! -z $deb ]; then
-	echo "You're using a debian based distro!"
+if [ ! -z $apt ]; then
+	distro="debian"
 fi
 
-if [ ! -z $arch ]; then
-	echo "You're using an arch based distro!"
+if [ ! -z $pacman ]; then
+	distro="arch"
 fi
+
+echo "You're using $distro!"
 
