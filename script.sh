@@ -5,7 +5,7 @@ pacman=`ls /etc | grep pacman | head -1 `
 
 if [ ! -z $apt ]; then
 	distro="debian"
-else if
+elif
 	[ ! -z $pacman ]; then
 	distro="arch"
 fi
@@ -16,4 +16,3 @@ if [ -z $apt ] && [ -z $pacman ]; then
 else 
 	echo "You're using $distro!"
 fi
-
