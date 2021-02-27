@@ -53,6 +53,15 @@ clear
 echo "Let's create an hidden directory (.mypasswords)in your home directory to store encrypted passwords."
 mkdir ~/.mypasswords
 
+if [ $? > 0 ]; then
+	read -p "~/.mypasswords exists. Overwrite ? Enter to continue, type 'n' to exit this script" ans
+	if [ ans > "n" ]; then
+		exit
+	fi
+	rm -rf ~/.mypasswords
+	mkdir ~/.mypasswords
+fi
+
 # Adding a function ~/.bashrc that writes passwords to ~/.mypasswords
 echo '
 # Use this function to save your passwords
@@ -61,7 +70,12 @@ pass(){
 	read -p "Enter the login ID for your password (eg. email address, username): " username
         read -p "Enter the password for this ID: " password
 	
-	email=`gpg --list-secret-key | grep uid | head -1 | awk "{print $NF}"| tr -d "<>" `
+	email=$( gpg --list-secret-key | grep uid | head -1 | awk "{print \$NF}"| tr -d "<>" )
 
-	gpg -e -r $email -o ~/.mypasswords/$keyword <<< "$username\n$password"
-}' >> ~/.bashrc	
+	gpg -e -r $email -o ~/.mypasswords/$keyword <<< "$username	$password"
+}' >> ~/.bashrc
+
+#realoding the bashrc
+source ~/.bashrc
+
+
