@@ -5,16 +5,15 @@ pacman=`ls /etc | grep pacman | head -1 `
 
 if [ ! -z $apt ]; then
 	distro="debian"
-fi
-
-if [ ! -z $pacman ]; then
+else if
+	[ ! -z $pacman ]; then
 	distro="arch"
 fi
 
+
 if [ -z $apt ] && [ -z $pacman ]; then
 	echo "This script is only for Arch or Debian based distros. Bye!!"
+else 
+	echo "You're using $distro!"
 fi
-
-
-echo "You're using $distro!"
 
