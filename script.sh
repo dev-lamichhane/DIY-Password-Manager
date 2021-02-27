@@ -5,9 +5,13 @@ pacman=`ls /etc | grep pacman | head -1 `
 
 if [ ! -z $apt ]; then
 	distro="debian"
+	command="sudo apt install"
+	packages="gpg xclip"
 elif
 	[ ! -z $pacman ]; then
 	distro="arch"
+	command="sudo pacman -S --needed"
+	packages="gnupg xclip"
 fi
 
 
@@ -18,4 +22,4 @@ else
 	echo "You're using $distro!"
 fi
 
-echo "let's get started!"
+$command $packages
