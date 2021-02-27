@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-
+#
 apt=`ls /etc | grep apt | head -1`
 pacman=`ls /etc | grep pacman | head -1 `
 
@@ -24,10 +24,11 @@ fi
 
 $command $packages
 
-key_status=`gpg --list-secret-key | grep sec`
-if [ -z key_status ]; then
+key_status=`gpg --list-secret-key | grep sec | awk '{print $1}' `
+echo "key status is $key_status"
+if [ -z $key_status ]; then
 	gpg --generate-key
-elif
+else
 	echo "You already have gpg keys!!"
 fi
 
