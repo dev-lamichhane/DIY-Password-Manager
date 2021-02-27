@@ -1,5 +1,18 @@
 #!/usr/bin/bash
 
+# encrypt and save passwords with the command 'put'
+# enter username, password and optionally a keyword to remember the username/password pair
+# decrypt and copy your desired password with the command 'get username/keyword'
+# example: enter myfakeemail@gmail.com as username, myfakepassword as password and gmail as the keyword for the 'put' command
+#	   decrypt and copy the password with command 'get gmail' on your terminal 
+
+# encrypted passwords are saved in ~/.mypasswords
+# a backup of that directory is saved at ~/Documents/.mypasswordsbakcup
+# the backup is updated every time you add a new password
+# Use at your own risk!
+
+
+
 # Determining whether we're working with apt or pacman
 
 apt=`ls /etc | grep apt | head -1`
@@ -62,20 +75,63 @@ if [ $? > 0 ]; then
 	mkdir ~/.mypasswords
 fi
 
+# Creating a directory in ~/Documents to backup you encrypted passwords
+# Everytime you push a passowrd to ~/.mypasswords, the backup will be updated
+
+mkdir ~/Documents/.mypasswordsbackup
+
+if [ $? > 0 ]; then
+	read -p "~/Documents/.mypasswords exists. Overwrite ? Enter to continue, type 'n' to exit this script" answ
+	if [ answ > "n" ]; then
+		exit
+	fi
+	rm -rf ~/.mypasswordsbackup
+	mkdir ~/.mypasswordsbackup
+fi
+
+
+
 # Adding a function ~/.bashrc that writes passwords to ~/.mypasswords
 echo '
 # Use this function to save your passwords
-pass(){
-	read -p "Enter a keyword to remember your passwords by: " keyword
+put(){
 	read -p "Enter the login ID for your password (eg. email address, username): " username
         read -p "Enter the password for this ID: " password
-	
+	read -p "Enter a short keyword for this userID/password pair (optional): " keyword
+
 	email=$( gpg --list-secret-key | grep uid | head -1 | awk "{print \$NF}"| tr -d "<>" )
 
-	gpg -e -r $email -o ~/.mypasswords/$keyword <<< "$username	$password"
+	if [ -z $keyword ]; then
+		filename=$username
+	else
+		filename=$keyword
+	fi
+
+
+	gpg -e -r $email -o ~/.mypasswords/$filename <<< "$username	$password"
+
+	# Backing passwords up
+
+	tar -zcvf ~/Documents/.mypasswordsbackup/backup.tar.zg ~/.mypasswords
 }' >> ~/.bashrc
 
-#realoding the bashrc
+# Adding a function to ~/.bashrc that decrypts and copies your password to the clipboard
+# The copied password will be pastable only once
+
+echo '
+# Use this function to decrypt and copy your desired password to the clipboard
+# This function will take one argument ie the keyword/ID for you desired passworid
+
+get(){
+	gpg -d ~/.mypasswords/$1 | awk "{print \$2}" | xclip -l 1
+}
+
+' >> ~/.bashrc
+
+
+# realoding the bashrc
+# you should be good to go!
+
 source ~/.bashrc
 
 
