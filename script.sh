@@ -13,6 +13,9 @@ fi
 
 if [ -z $apt ] && [ -z $pacman ]; then
 	echo "This script is only for Arch or Debian based distros. Bye!!"
+	exit $?
 else 
 	echo "You're using $distro!"
 fi
+
+echo "let's get started!"
