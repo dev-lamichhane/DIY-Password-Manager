@@ -67,8 +67,8 @@ echo "Let's create an hidden directory (.mypasswords)in your home directory to s
 mkdir ~/.mypasswords
 
 if [ $? > 0 ]; then
-	read -p "~/.mypasswords exists. Overwrite ? Enter to continue, type 'n' to exit this script" ans
-	if [ ans > "n" ]; then
+	read -p "~/.mypasswords already xists. Overwrite ? Enter to continue, hit any other key+Enter to exit" ans
+	if [ ! -z $ans ]; then
 		exit
 	fi
 	rm -rf ~/.mypasswords
@@ -81,8 +81,8 @@ fi
 mkdir ~/Documents/.mypasswordsbackup
 
 if [ $? > 0 ]; then
-	read -p "~/Documents/.mypasswords exists. Overwrite ? Enter to continue, type 'n' to exit this script" answ
-	if [ answ > "n" ]; then
+	read -p "~/Documents/.mypasswords exists. Overwrite ? Enter to continue, hit any other key+Enter to exit" answ
+	if [ ! -z $answ  ]; then
 		exit
 	fi
 	rm -rf ~/.mypasswordsbackup
@@ -134,4 +134,4 @@ get(){
 
 source ~/.bashrc
 
-
+echo "You are all set up!"
