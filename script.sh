@@ -5,7 +5,7 @@ pacman=`ls /etc | grep pacman | head -1 `
 
 if [ ! -z $apt ]; then
 	distro="debian"
-	command="sudo apt install"
+	command="sudo apt install --no-install-recommends"
 	packages="gpg xclip"
 elif
 	[ ! -z $pacman ]; then
