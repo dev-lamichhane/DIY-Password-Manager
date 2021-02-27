@@ -85,8 +85,8 @@ if [ $? > 0 ]; then
 	if [ ! -z $answ  ]; then
 		exit
 	fi
-	rm -rf ~/.mypasswordsbackup
-	mkdir ~/.mypasswordsbackup
+	rm -rf ~/Documents/.mypasswordsbackup
+	mkdir ~/Documents/.mypasswordsbackup
 fi
 
 
