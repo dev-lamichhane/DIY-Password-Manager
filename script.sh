@@ -34,7 +34,7 @@ if [ -z $key_status ]; then
 	read -p "Press enter to start gpg key generation."
 	gpg --generate-key
 else
-	name=`gpg --list-secret-key | grep uid | head -1 | awk '{print $NF}' `
+	name=`gpg --list-secret-key | grep uid | head -1 | awk '{print $NF}'| tr -d "<>" `
 	echo "Looks like you already have a keypair associated with $name. Let's use it to encrypt your passwords."
 	read -p "Please press enter if you agree. You can exit this script anytime by pressing Ctrl+C."
 fi
