@@ -23,3 +23,12 @@ else
 fi
 
 $command $packages
+
+key_status=`gpg --list-secret-key | grep sec`
+if [ -z key_status ]; then
+	gpg --generate-key
+elif
+	echo "You already have gpg keys!!"
+fi
+
+
