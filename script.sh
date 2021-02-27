@@ -27,10 +27,16 @@ $command $packages
 key_status=`gpg --list-secret-key | grep sec | awk '{print $1}' `
 echo "key status is $key_status"
 if [ -z $key_status ]; then
-	read -p "Please follow instructions to create a gpg keypair. Write down the name, email and passphrase you used to create the keypair!! Press enter to start gpg key generation."
+	clear
+	echo "You do not have a gpg keypair, let's generate one!"
+	echo "Please follow instructions to create a gpg keypair."
+	echo "Write down the name, email and passphrase you used to create the keypair!!"
+	read -p "Press enter to start gpg key generation."
 	gpg --generate-key
 else
-	echo "You already have gpg keys!!"
+	name=`gpg --list-secret-key | grep uid | head -1 | awk '{print $NF}' `
+	echo "Looks like you already have a keypair associated with $name. Let's use it to encrypt your passwords."
+	read -p "Please press enter if you agree. You can exit this script anytime by pressing Ctrl+C."
 fi
 
 
