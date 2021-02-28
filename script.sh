@@ -1,18 +1,5 @@
 #!/usr/bin/bash
 
-# encrypt and save passwords with the command 'put'
-# enter username, password and optionally a keyword to remember the username/password pair
-# decrypt and copy your desired password with the command 'get username/keyword'
-# example: enter myfakeemail@gmail.com as username, myfakepassword as password and gmail as the keyword for the 'put' command
-#	   decrypt and copy the password with command 'get gmail' on your terminal 
-
-# encrypted passwords are saved in ~/.mypasswords
-# a backup of that directory is saved at ~/Documents/.mypasswordsbakcup
-# the backup is updated every time you add a new password
-# Use at your own risk!
-
-
-
 # Determining whether we're working with apt or pacman
 
 apt=`ls /etc | grep apt | head -1`
@@ -45,7 +32,6 @@ $command $packages
 # If you have multiple sets of keys, this program will use the first one
 
 key_status=`gpg --list-secret-key | grep sec | awk '{print $1}' `
-echo "key status is $key_status"
 if [ -z $key_status ]; then
 	clear
 	echo "You do not have a gpg keypair, let's generate one!"
